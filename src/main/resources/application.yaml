@@ -1,0 +1,13 @@
+spring:
+  ai:
+    ollama:
+      base-url: http://localhost:11434/
+      chat:
+        options:
+          model: mistral
+          temperature: 1
+  application:
+    name: demo-spring-ai-ollama
+  threads:
+    virtual:
+      enabled: true
