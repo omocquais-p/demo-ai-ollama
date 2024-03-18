@@ -13,8 +13,10 @@ call-api:
 call-api-topic:
 	curl -X GET --location "http://localhost:8080/ai/generate/joke/chickens"
 
-call-api-topic-prompt:
+call-api-newsletter-prompt:
 	curl -X GET --location "http://localhost:8080/ai/generate/prompt/tennis" | jq .
 
+call-api-movie-prompt:
+	curl -X GET --location "http://localhost:8080/ai/generate/movies?category=drama&year=1999" | jq .
 
 

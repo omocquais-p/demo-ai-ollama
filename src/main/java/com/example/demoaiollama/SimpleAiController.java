@@ -28,6 +28,9 @@ public class SimpleAiController {
     @Value("classpath:/prompt/newsletter-prompt.srt")
     private Resource newsletterPromptRes;
 
+    @Value("classpath:/prompt/movie-prompt.srt")
+    private Resource moviePromptRes;
+
     @Autowired
     public SimpleAiController(ChatClient chatClient) {
         this.chatClient = chatClient;
@@ -39,12 +42,12 @@ public class SimpleAiController {
     }
 
     @GetMapping("ai/generate/joke/{topic}")
-    public Map<String, String>  generateJoke(@PathVariable String topic) {
+    public Map<String, String> generateJoke(@PathVariable String topic) {
         return Map.of("generation", chatClient.call(String.format("Tell me a joke about %s", topic)));
     }
 
     @GetMapping("ai/generate/prompt/{topic}")
-    public Map<String, String>  generateWithPrompt(@PathVariable String topic) {
+    public Map<String, String> generateWithPrompt(@PathVariable String topic) {
         final var sysMsg = new SystemPromptTemplate(systemPromptRes).createMessage();
         log.info("Created system prompt: {}", sysMsg);
 
@@ -58,5 +61,23 @@ public class SimpleAiController {
 
 
         return Map.of("generation", chatClient.call(prompt).getResult().getOutput().getContent());
+    }
+
+    @GetMapping("ai/generate/movies")
+    public Movie generateMovies(@RequestParam String category, @RequestParam String year) {
+        final var sysMsg = new SystemPromptTemplate(systemPromptRes).createMessage();
+        log.info("Created system prompt: {}", sysMsg);
+
+        final var movieMsg = new PromptTemplate(moviePromptRes).
+                createMessage(Map.of(
+                                "category", category,
+                                "year", year
+                        )
+                );
+        log.info("Created movie prompt: {}", movieMsg);
+
+        final var prompt = new Prompt(List.of(sysMsg, movieMsg));
+        String content = chatClient.call(prompt).getResult().getOutput().getContent();
+        return new Movie(category, Integer.parseInt(year), content);
     }
 }
