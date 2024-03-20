@@ -6,10 +6,6 @@ spring:
         options:
           temperature: 1
           model: mistral
-#          model: dolphin-phi
-#      embedding:
-#        enabled: false
-#        model: dolphin-phi
     vectorstore:
       pgvector:
         distance-type: COSINE_DISTANCE
