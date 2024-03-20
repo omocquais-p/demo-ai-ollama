@@ -3,8 +3,9 @@ start-ollama:
 	ollama start
 
 # Setup - Step 2
-run-model-dolphin-phi:
-	ollama run dolphin-phi
+run-model:
+	ollama run mistral
+	#ollama run dolphin-phi
 
 # Setup - Step 3
 start-app:
