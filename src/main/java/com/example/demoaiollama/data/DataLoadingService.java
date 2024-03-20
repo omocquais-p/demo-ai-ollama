@@ -5,6 +5,8 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -15,6 +17,9 @@ public class DataLoadingService {
 
     private final VectorStore vectorStore;
 
+    @Value("classpath:/documents/FAQ-SpringAcademy.pdf")
+    private Resource pdfDocument;
+
     public DataLoadingService(VectorStore vectorStore) {
         this.vectorStore = vectorStore;
     }
@@ -24,7 +29,12 @@ public class DataLoadingService {
 
         // Get data and Extract text from page html
         var dataUrl = "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html";
-        var tikaReader = new TikaDocumentReader(dataUrl);
+        saveDocument(new TikaDocumentReader(dataUrl), "etl_pipeline");
+
+        saveDocument(new TikaDocumentReader(pdfDocument), "spring_academy");
+    }
+
+    private void saveDocument(TikaDocumentReader tikaReader, String documentName){
         var extractDocs = tikaReader.get();
 
         // Split text into chunks
@@ -33,13 +43,13 @@ public class DataLoadingService {
         log.info("CHUNKS = " + chunks.size());
 
         // Create Document for each text chunk
+
         var documents = chunks.stream()
-                .map(d -> new Document(d, Map.of("name", "etl_pipeline")))
+                .map(d -> new Document(d, Map.of("name", documentName)))
                 .toList();
         log.info("Documents size:" + documents.size());
 
         // Create embedding for each document and store to vector database
         vectorStore.accept(documents);
-
     }
 }

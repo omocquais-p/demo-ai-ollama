@@ -30,12 +30,22 @@ call-api-chatbot:
 data-delete:
 	curl -X POST --location "http://localhost:8080/data/delete"
 
-data-load: data-delete
-	curl -X POST --location "http://localhost:8080/data/load"
-
 data-count:
 	curl -X GET --location "http://localhost:8080/data/count"
 
-# What is ETL pipeline?
-data-query-rag:
-	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20ETL%20pipeline%3F"  | jq .
+data-load: data-delete data-count
+	curl -X POST --location "http://localhost:8080/data/load"
+
+# What is ETL pipeline? (No RAG)
+data-query-with-no-rag:
+	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20ETL%20pipeline%3F&stuffit=true"  | jq .
+
+# What is ETL pipeline? (RAG)
+data-query-with-no-rag:
+	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20ETL%20pipeline%3F&stuffit=false"  | jq .
+
+data-query-with-no-rag-spring-academy:
+	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20Spring%20Academy%3F&stuffit=false"  | jq .
+
+data-query-with-rag-spring-academy:
+	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20Spring%20Academy%3F&stuffit=true"  | jq .
