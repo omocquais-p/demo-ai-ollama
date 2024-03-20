@@ -44,8 +44,10 @@ data-query-with-no-rag:
 data-query-with-no-rag:
 	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20ETL%20pipeline%3F&stuffit=false"  | jq .
 
+# What is Spring Academy? (No RAG)
 data-query-with-no-rag-spring-academy:
 	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20Spring%20Academy%3F&stuffit=false"  | jq .
 
+# What is Spring Academy? (RAG)
 data-query-with-rag-spring-academy:
 	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20Spring%20Academy%3F&stuffit=true"  | jq .
