@@ -21,7 +21,7 @@
 ## Queries - RAG
 
 ### What is ETL pipeline? (RAG)
-    make data-query-with-no-rag
+    make data-query-with-rag
 
 ### What is ETL pipeline? (No RAG)
     make data-query-with-no-rag

@@ -36,11 +36,11 @@ data-count:
 data-load: data-delete data-count
 	curl -X POST --location "http://localhost:8080/data/load"
 
-# What is ETL pipeline? (No RAG)
-data-query-with-no-rag:
+# What is ETL pipeline? (RAG)
+data-query-with-rag:
 	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20ETL%20pipeline%3F&stuffit=true"  | jq .
 
-# What is ETL pipeline? (RAG)
+# What is ETL pipeline? (No RAG)
 data-query-with-no-rag:
 	curl -X GET --location "http://localhost:8080/qa?question=What%20is%20ETL%20pipeline%3F&stuffit=false"  | jq .
 
