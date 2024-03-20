@@ -1,4 +1,4 @@
-# RAG 
+# Spring Boot Application with Spring AI and RAG (Retrieval Augmented Generation)
 
 ## Start ollama
     make start-ollama
