@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -23,11 +24,28 @@ public class SimpleAiController {
 
     @GetMapping("/ai/simple")
     public Map<String, String> completion(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
-        return Map.of("generation", chatClient.call(message));
+
+        String answer = chatClient.call(message);
+
+        var map = new HashMap<String, String>();
+        map.put("question", message);
+        map.put("answer", answer);
+
+        return map;
+
     }
 
     @GetMapping("/ai/generate/joke/{topic}")
     public Map<String, String> generateJoke(@PathVariable String topic) {
-        return Map.of("generation", chatClient.call(String.format("Tell me a joke about %s", topic)));
+
+        String message = String.format("Tell me a joke about %s", topic);
+        String answer = chatClient.call(message);
+
+        var map = new HashMap<String, String>();
+        map.put("question", message);
+        map.put("answer", answer);
+
+        return map;
+
     }
 }

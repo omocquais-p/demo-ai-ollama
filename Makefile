@@ -20,11 +20,11 @@ call-api-newsletter:
 
 # Simple Joke Controller
 call-api-joke:
-	curl -X GET --location "http://localhost:8080/ai/generate/joke/chickens"
+	curl -X GET --location "http://localhost:8080/ai/generate/joke/chickens" | jq .
 
 # Simple ChatBot Controller - what is the history of the eiffel tower?
 call-api-chatbot:
-	curl -X GET --location "http://localhost:8080/ai/simple?message=what%20is%20the%20history%20of%20the%20eiffel%20tower%3F"
+	curl -X GET --location "http://localhost:8080/ai/simple?message=what%20is%20the%20history%20of%20the%20eiffel%20tower%3F" | jq .
 
 # RAG  - Retrieval Augmented Generation
 data-delete:
