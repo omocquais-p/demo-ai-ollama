@@ -4,10 +4,24 @@ spring:
       base-url: http://localhost:11434/
       chat:
         options:
-          model: mistral
+          model: dolphin-phi
           temperature: 1
+      embedding:
+        enabled: false
+        model: dolphin-phi
+    vectorstore:
+      pgvector:
+        distance-type: COSINE_DISTANCE
+        remove-existing-vector-store-table: true
   application:
     name: demo-spring-ai-ollama
   threads:
     virtual:
       enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vector_store
+    username: postgres
+    password: postgres
+logging:
+  level:
+    org.springframework.jdbc: debug
