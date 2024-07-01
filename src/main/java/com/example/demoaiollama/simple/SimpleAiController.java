@@ -1,7 +1,7 @@
 package com.example.demoaiollama.simple;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +18,14 @@ public class SimpleAiController {
     private final ChatClient chatClient;
 
     @Autowired
-    public SimpleAiController(ChatClient chatClient) {
-        this.chatClient = chatClient;
+    public SimpleAiController(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder.build();
     }
 
     @GetMapping("/ai/simple")
     public Map<String, String> completion(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
 
-        String answer = chatClient.call(message);
+        String answer = chatClient.prompt().user(message).call().chatResponse().getResult().getOutput().getContent();
 
         var map = new HashMap<String, String>();
         map.put("question", message);
@@ -39,7 +39,7 @@ public class SimpleAiController {
     public Map<String, String> generateJoke(@PathVariable String topic) {
 
         String message = String.format("Tell me a joke about %s", topic);
-        String answer = chatClient.call(message);
+        String answer = chatClient.prompt().user(message).call().chatResponse().getResult().getOutput().getContent();
 
         var map = new HashMap<String, String>();
         map.put("question", message);

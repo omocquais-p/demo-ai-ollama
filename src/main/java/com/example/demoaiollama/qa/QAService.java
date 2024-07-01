@@ -1,8 +1,7 @@
 package com.example.demoaiollama.qa;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -31,8 +30,8 @@ public class QAService {
     @Value("classpath:/prompt/system-chatbot.st")
     private Resource chatBotSystemPromptResource;
 
-    public QAService(ChatClient chatClient, VectorStore vectorStore) {
-        this.chatClient = chatClient;
+    public QAService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
+        this.chatClient = chatClientBuilder.build();
         this.vectorStore = vectorStore;
     }
 
@@ -43,10 +42,8 @@ public class QAService {
 
         Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
 
-        log.info("Asking AI model to reply to question.");
-        ChatResponse chatResponse = chatClient.call(prompt);
-        log.info("AI responded.");
-        return chatResponse.getResult().getOutput().getContent();
+        // A single line API call to connect to your favorite LLM and get a response.
+        return chatClient.prompt(prompt).call().chatResponse().getResult().getOutput().getContent();
     }
 
     private Message getSystemMessage(String question, boolean stuffit) {

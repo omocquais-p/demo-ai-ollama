@@ -1,7 +1,7 @@
 package com.example.demoaiollama.newsletter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
@@ -25,8 +25,8 @@ public class NewsletterController {
     private Resource newsletterPromptRes;
 
     private final ChatClient chatClient;
-    public NewsletterController(ChatClient chatClient) {
-        this.chatClient = chatClient;
+    public NewsletterController(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder.build();
     }
 
     @GetMapping("/ai/newsletter/generate/{topic}")
@@ -42,6 +42,6 @@ public class NewsletterController {
 
         final var prompt = new Prompt(List.of(sysMsg, newsletterMsg));
 
-        return Map.of("generation", chatClient.call(prompt).getResult().getOutput().getContent());
+        return Map.of("generation", chatClient.prompt(prompt).call().chatResponse().getResult().getOutput().getContent());
     }
 }

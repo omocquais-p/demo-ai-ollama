@@ -2,7 +2,7 @@ package com.example.demoaiollama.movie;
 
 import com.example.demoaiollama.dto.Movie;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
@@ -26,8 +26,8 @@ public class MovieController {
     @Value("classpath:/prompt/movie-prompt.srt")
     private Resource moviePromptRes;
 
-    public MovieController(ChatClient chatClient) {
-        this.chatClient = chatClient;
+    public MovieController(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder.build();
     }
 
     @GetMapping("/ai/movie/generate")
@@ -44,7 +44,7 @@ public class MovieController {
         log.info("Created movie prompt: {}", movieMsg);
 
         final var prompt = new Prompt(List.of(sysMsg, movieMsg));
-        String content = chatClient.call(prompt).getResult().getOutput().getContent();
+        String content = chatClient.prompt(prompt).call().chatResponse().getResult().getOutput().getContent();
         return new Movie(category, Integer.parseInt(year), content);
     }
 }
