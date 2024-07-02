@@ -17,7 +17,6 @@ public class SimpleAiController {
 
     private final ChatClient chatClient;
 
-    @Autowired
     public SimpleAiController(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
     }

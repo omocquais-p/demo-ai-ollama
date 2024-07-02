@@ -14,7 +14,6 @@ import java.util.Map;
 public class QAController {
     private final QAService qaService;
 
-    @Autowired
     public QAController(QAService qaService) {
         this.qaService = qaService;
     }

@@ -21,6 +21,7 @@ public class NewsletterController {
     private Resource newsletterPromptRes;
 
     private final ChatClient chatClient;
+
     public NewsletterController(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
     }
