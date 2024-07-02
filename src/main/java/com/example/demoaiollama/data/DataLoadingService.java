@@ -24,26 +24,14 @@ public class DataLoadingService {
         this.vectorStore = vectorStore;
     }
 
-
     public void load() {
         // Get data and Extract text from page html
         var dataUrl = "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html";
-        saveDocument(new TikaDocumentReader(dataUrl), "etl_pipeline");
-        saveDocument(new TikaDocumentReader(pdfDocument), "spring_academy");
+        saveDocument(new TikaDocumentReader(dataUrl));
+        saveDocument(new TikaDocumentReader(pdfDocument));
     }
 
-    private void saveDocument(TikaDocumentReader tikaReader, String documentName){
-        // Split text into chunks
-        //        var chunks = tokenTextSplitter.split(new Document(extractDocs.getFirst().getContent()));
-//        log.info("CHUNKS = " + chunks.size());
-//
-//        // Create Document for each text chunk
-//
-//        var documents = chunks.stream()
-//                .map(d -> new Document(d, Map.of("name", documentName)))
-//                .toList();
-//        log.info("Documents size:" + documents.size());
-
+    private void saveDocument(TikaDocumentReader tikaReader){
         // Create embedding for each document and store to vector database
         vectorStore.accept(new TokenTextSplitter().split(new Document(tikaReader.get().getFirst().getContent())));
     }

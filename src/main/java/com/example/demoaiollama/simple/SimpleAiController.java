@@ -25,7 +25,7 @@ public class SimpleAiController {
     @GetMapping("/ai/simple")
     public Map<String, String> completion(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
 
-        String answer = chatClient.prompt().user(message).call().chatResponse().getResult().getOutput().getContent();
+        String answer = chatClient.prompt().user(message).call().content();
 
         var map = new HashMap<String, String>();
         map.put("question", message);
@@ -39,7 +39,7 @@ public class SimpleAiController {
     public Map<String, String> generateJoke(@PathVariable String topic) {
 
         String message = String.format("Tell me a joke about %s", topic);
-        String answer = chatClient.prompt().user(message).call().chatResponse().getResult().getOutput().getContent();
+        String answer = chatClient.prompt().user(message).call().content();
 
         var map = new HashMap<String, String>();
         map.put("question", message);
